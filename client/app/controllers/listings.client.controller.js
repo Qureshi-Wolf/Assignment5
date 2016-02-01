@@ -87,6 +87,10 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
             var id = $stateParams.listingId;
             var listing = $scope.listing;
 
+            listing.name = $scope.name;
+            listing.code = $scope.code;
+            listing.address = $scope.address;
+
             Listings.update(id, listing)
                             .then(function (response) {
                                 $state.go('listings.list', { successMessage: 'Listing successfully updated!' });
