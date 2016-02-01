@@ -111,8 +111,10 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
             }
             
             var id = $stateParams.listingId;
+            var listing = $scope.listing;
+            $scope.Listings.splice($scope.Listings.indexOf(listing), 1);
             
-            Listings.delete(id)
+            Listings.remove(listing)
                         .then(function (response) {
                             $state.go('listings.list', { successMessage: 'Listing successfully removed!' });
                         }, function (error) {
