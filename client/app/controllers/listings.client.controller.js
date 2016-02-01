@@ -8,6 +8,34 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
             Listings.getAll().then(function(response) {
                 $scope.loading = false; //remove loader
                 $scope.listings = response.data;
+				
+				// reformat data for markers 
+				$scope.l_markers = [];
+				for(var i =0; i< $scope.listings.length; i++)
+				{
+					
+					
+					if(typeof $scope.listings[i].coordinates  == "undefined" || $scope.listings[i].coordinates == null)
+					{
+							//skip
+					}
+					
+					else
+					{
+						$scope.l_markers.push({
+						"id": $scope.listings[i]._id,
+						"name": $scope.listings[i].name,
+						"latitude": $scope.listings[i].coordinates.latitude,
+						"longitude": $scope.listings[i].coordinates.longitude,
+						"address": $scope.listings[i].address,
+						"code": $scope.listings[i].code
+						});
+					
+					}
+				}
+				
+				//console.log($scope.l_markers);
+				
             }, function(error) {
                 $scope.loading = false;
                 $scope.error = 'Unable to retrieve listings!\n' + error;
@@ -15,7 +43,7 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
         };
 
         $scope.findOne = function() {
-            debugger;
+            // debugger;
             $scope.loading = true;
 
             /*
@@ -85,11 +113,12 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
                 return false;
             }
             var id = $stateParams.listingId;
-            var listing = $scope.listing;
+            // var listing = $scope.listing;
+			
 
-            listing.name = $scope.name;
-            listing.code = $scope.code;
-            listing.address = $scope.address;
+            // listing.name = $scope.name;
+            // listing.code = $scope.code;
+            // listing.address = $scope.address;
 
             Listings.update(id, listing)
                             .then(function (response) {
@@ -104,17 +133,13 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
                 Implement the remove function. If the removal is successful, navigate back to 'listing.list'. Otherwise, 
                 display the error. 
              */
+			 
             $scope.error = null;
-            if (!isValid) {
-                $scope.$broadcast('show-errors-check-validity', 'articleForm');
-                return false;
-            }
             
             var id = $stateParams.listingId;
-            var listing = $scope.listing;
-            $scope.Listings.splice($scope.Listings.indexOf(listing), 1);
+            //var listing = $scope.listing;
             
-            Listings.remove(listing)
+            Listings.delete(id)
                         .then(function (response) {
                             $state.go('listings.list', { successMessage: 'Listing successfully removed!' });
                         }, function (error) {
@@ -135,5 +160,9 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
             }, 
             zoom: 14
         }
+
+		
+		
+		
     }
 ]);

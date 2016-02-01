@@ -11,11 +11,11 @@
 
 <div id="map_canvas" ng-controller="ListingsController" ng-init="find()">
     <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" options="options" bounds="map.bounds">
-        <ui-gmap-markers models="Listings" coords="'self'" icon="'icon'" click="onClick">
+        <ui-gmap-markers models="l_markers" coords="'self'" icon="'icon'" >
             <ui-gmap-windows show="show">
-                <div ng-non-bindable>{{name}}</div>
-                <div ng-non-bindable>{{code}}</div>
-                <div ng-non-bindable>{{address}}</div>
+                <div ng-non-bindable>[{{code}}] {{name}}<br>{{address}}</div>
+                <!-- <div ng-non-bindable>{{code}}</div>
+                <div ng-non-bindable>{{address}}</div> -->
             </ui-gmap-windows>
         </ui-gmap-markers> 
     </ui-gmap-google-map>
